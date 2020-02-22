@@ -68,4 +68,21 @@ class RegisterController extends Controller
             'password' => bcrypt($data['password']),
         ]);
     }
+
+    public function register(Request $rq){
+        $user = new User;
+        $user->name = $rq->name;
+        $user->email = $rq->email;
+        $user->password = bcrypt($rq->password);
+        $user->remember_token = $rq->_token;
+        // 1 là quản trị viên, 2 là khách hàng
+        $user->userstype_id = 2;
+        $user->created_at = Carbon\Carbon::now()->toDateTimeString();
+        $user->updated_at = Carbon\Carbon::now()->toDateTimeString();
+
+        $user->save();
+
+
+        return redirect()->route('login',compact($user));
+    }
 }

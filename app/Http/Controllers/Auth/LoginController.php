@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
+use Auth;
 
 class LoginController extends Controller
 {
@@ -35,5 +37,26 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+
+    public function login(Request $rq){
+        $email = $rq->email;
+        $password = $rq->password;
+        
+        if (Auth::attempt(['email' => $email, 'password' => $password])) {
+            // Authentication passed...
+            if(Auth::user()->userstype_id == 2)
+                return redirect()->route('home');
+            else
+                return "This is Admin page!";
+        }
+        else {
+            return redirect()->back();                  
+        }
+    }
+
+    public function logout(){
+        Auth::logout();
+        return redirect()->route('home');
     }
 }

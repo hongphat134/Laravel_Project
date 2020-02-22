@@ -12,6 +12,11 @@
         <a href="{{url('/faq')}}" class="nav-link">FAQ</a>
     </li>
     <li class="navbar-item">
+        @if(Auth::check())
+            Chào bạn, {{Auth::user()->name}}
+            <a href="{{ route('logout')}}">Thoát</a>
+        @else
         <a href="{{url('/login')}}" class="nav-link">Đăng nhập</a>
+        @endif
     </li>
 </ul>
