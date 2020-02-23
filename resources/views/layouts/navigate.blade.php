@@ -11,7 +11,7 @@
     <li class="navbar-item">
         <a href="{{url('/faq')}}" class="nav-link">FAQ</a>
     </li>
-    <li class="navbar-item">
+    <li class="navbar-item">        
         @if(Auth::check())
             Chào bạn, {{Auth::user()->name}}
             <a href="{{ route('logout')}}">Thoát</a>

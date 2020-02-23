@@ -42,7 +42,8 @@ class LoginController extends Controller
     public function login(Request $rq){
         $email = $rq->email;
         $password = $rq->password;
-        
+        $remember = $rq->_token;
+
         if (Auth::attempt(['email' => $email, 'password' => $password])) {
             // Authentication passed...
             if(Auth::user()->userstype_id == 2)

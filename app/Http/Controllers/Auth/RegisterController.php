@@ -6,6 +6,9 @@ use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
+use Auth;
+use Carbon;
 
 class RegisterController extends Controller
 {
@@ -82,7 +85,8 @@ class RegisterController extends Controller
 
         $user->save();
 
+        Auth::login($user);
 
-        return redirect()->route('login',compact($user));
+        return redirect()->route('login');
     }
 }
