@@ -1,5 +1,4 @@
 @extends('layouts.master')
-
 @section('content')
 <div class="container">
     <div class="row">
@@ -30,7 +29,9 @@
 
                             <div class="col-md-6">
                                 <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required>
-
+                                @if(session('error'))
+                                    {{session('error')}}
+                                @endif
                                 @if ($errors->has('email'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('email') }}</strong>

@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ResetsPasswords;
+use Illuminate\Http\Request;
+use App\User;
 
 class ResetPasswordController extends Controller
 {
@@ -35,5 +37,29 @@ class ResetPasswordController extends Controller
     public function __construct()
     {
         $this->middleware('guest');
+    }
+
+    public function getResetPassword($token,$email){
+        return view('auth.passwords.reset',compact('token','email'));
+    }
+
+    public function postResetPassword(Request $rq){
+        //Kiểm tra Confirm Password
+        if(strcasecmp($rq->password_confirmation,$rq->password)) return redirect()->back()->with(['error' => 'Confirm password is not incorrect!']);
+
+        $user = User::whereEmail($rq->email)->first();
+
+        //Kiểm tra email
+        if($user == null) return redirect()->back()->with(['error'=>'Email không chính xác']);
+
+        //Kiểm tra token (phòng ngừa TH điền email khác)
+        if(strcasecmp($user->remember_token,$rq->token)) return redirect()->back()->with(['error'=>'Email không chính xác']);
+
+        $user->password = bcrypt($rq->password);
+        $user->remember_token = $rq->token;
+
+        $user->update();
+
+        return redirect()->back()->with(['success' => 'Cập nhật thành công!']);
     }
 }

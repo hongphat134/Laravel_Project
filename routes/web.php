@@ -35,11 +35,8 @@ Route::post('/login','Auth\LoginController@login')->name('login');
 Route::post('/register','Auth\RegisterController@register')->name('register');
 Route::get('/logout','Auth\LoginController@logout')->name('logout');
 
-Route::get('/reset',function(){
-	return view('auth.passwords.reset');
-});
+Route::get('/reset/{token}/{email}','Auth\ResetPasswordController@getResetPassword');
+Route::post('/reset','Auth\ResetPasswordController@postResetPassword')->name('password.request');
 
-Route::controllers([
-	'auth' => 'Auth\AuthController',
-	'password' => 'Auth\PasswordController'
-]);
+Route::post('/postEmail','Auth\ForgotPasswordController@forgot')->name('password.email');
+

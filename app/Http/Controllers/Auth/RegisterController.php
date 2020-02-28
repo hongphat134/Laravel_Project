@@ -73,20 +73,29 @@ class RegisterController extends Controller
     }
 
     public function register(Request $rq){
-        $user = new User;
-        $user->name = $rq->name;
-        $user->email = $rq->email;
-        $user->password = bcrypt($rq->password);
-        $user->remember_token = $rq->_token;
-        // 1 là quản trị viên, 2 là khách hàng
-        $user->userstype_id = 2;
-        $user->created_at = Carbon\Carbon::now()->toDateTimeString();
-        $user->updated_at = Carbon\Carbon::now()->toDateTimeString();
+        //Kiểm tra confirm password
+        if(strcasecmp($rq->password_confirmation,$rq->password)) return redirect()->back()->with(['error' => 'Confirm Password is not incorrect!']);
 
-        $user->save();
+        //Kiểm tra email có bị trùng ko?
+        $check_user = User::whereEmail($rq->email)->first();
 
-        Auth::login($user);
+        if($check_user == null){
+            $user = new User;
+            $user->name = $rq->name;
+            $user->email = $rq->email;
+            $user->password = bcrypt($rq->password);
+            $user->remember_token = $rq->_token;
+            // 1 là quản trị viên, 2 là khách hàng
+            $user->userstype_id = 2;
+            $user->created_at = Carbon\Carbon::now()->toDateTimeString();
+            $user->updated_at = Carbon\Carbon::now()->toDateTimeString();
 
-        return redirect()->route('login');
+            $user->save();
+
+            Auth::login($user);
+
+            return redirect()->route('login');
+        }
+        else return redirect()->back()->with(['error' => 'Email đã tồn tại!']);        
     }
 }
