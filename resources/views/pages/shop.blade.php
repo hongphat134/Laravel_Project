@@ -7,6 +7,9 @@
         </div>
     </div>
     <section class="static about-sec">
+        @if(session('alert'))
+            {{ session('alert') }}
+        @endif
         <div class="container">
             <h2>Những loại sách nổi bật</h2>
             <div class="recomended-sec">
@@ -36,7 +39,9 @@
                     @foreach($data as $item)                
                     <div class="col-md-3">
                         <div class="item">
-                            <img style="width: 167px; height: 260px;" src="{!! asset('public/images/'.$item->book_img) !!}" alt="{{$item->book_name}}">
+                            <a href="{{url('product-single/'.$item->book_url)}}">
+                                <img style="width: 167px; height: 260px;" src="{!! asset('public/images/'.$item->book_img) !!}" alt="{{$item->book_name}}" title="{{$item->book_name}}">
+                            </a>
                             <h3><a href="{{url('product-single/'.$item->book_url)}}">{{$item->book_name}}</a>
                             @if($item->book_promotion == 1)                        
                                 <span class="badge badge-danger">Giảm giá</span>                         
@@ -46,13 +51,13 @@
                                     {{number_format($item->book_price*((100 - PERCENT_OFF) * 0.01)) }}<sup>đ</sup>
                                 </span>
                                 <strike><sup><span class="price">{{number_format($item->book_price)}}<sup>đ</sup></span> </sup></strike>
-                                / <a href="#">Mua ngay</a>
+                                / <a href="{{ route('addItem',[$item->id]) }}">Mua ngay</a>
                             </h6> 
                             @else                            
                             </h3>                        
                             <h6>
                                 <span class="price">{{number_format($item->book_price)}}<sup>đ</sup></span>                            
-                                / <a href="#">Mua ngay</a>
+                                / <a href="{{ route('addItem',[$item->id]) }}">Mua ngay</a>
                             </h6> 
                             @endif
                         </div>

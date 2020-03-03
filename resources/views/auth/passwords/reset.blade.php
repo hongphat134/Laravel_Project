@@ -7,6 +7,13 @@
                 <div class="panel-heading">Reset Password</div>
                
                 <div class="panel-body">
+                    @if(count($errors) > 0)
+                        @foreach($errors->all() as $err)
+                        <div class="alert alert-danger">     
+                            {{ $err }} <br>
+                        </div>
+                        @endforeach
+                    @endif   
                     <form class="form-horizontal" method="POST" action="{{ route('password.request') }}">
                         {{ csrf_field() }}
 
@@ -18,7 +25,7 @@
                             <div class="col-md-6">
                                 <input id="email" type="email" class="form-control" name="email" value="{{ $email or old('email') }}" required autofocus>
 
-                                @if(session('success'))
+                                <!-- @if(session('success'))
                                     {{session('success')}}
                                 @endif
 
@@ -30,7 +37,7 @@
                                     <span class="help-block">
                                         <strong>{{ $errors->first('email') }}</strong>
                                     </span>
-                                @endif
+                                @endif -->
                             </div>
                         </div>
 
@@ -40,11 +47,11 @@
                             <div class="col-md-6">
                                 <input id="password" type="password" class="form-control" name="password" required>
 
-                                @if ($errors->has('password'))
+                               <!--  @if ($errors->has('password'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('password') }}</strong>
                                     </span>
-                                @endif
+                                @endif -->
                             </div>
                         </div>
 
@@ -53,11 +60,11 @@
                             <div class="col-md-6">
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
 
-                                @if ($errors->has('password_confirmation'))
+                                <!-- @if ($errors->has('password_confirmation'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('password_confirmation') }}</strong>
                                     </span>
-                                @endif
+                                @endif -->
                             </div>
                         </div>
 

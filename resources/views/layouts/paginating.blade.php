@@ -9,7 +9,11 @@
         @endif
         @for ($i = 1; $i <=  $data->lastPage(); $i++)
         <li class="page-item {!! ($data->currentPage() == $i)? 'active':'' !!}">
+            @if($data->currentPage() != $i)
             <a class="page-link" href="{!! str_replace('/?','?',$data->url($i)) !!}">{!! $i !!}</a>
+            @else 
+            <a class="page-link">{!! $i !!}</a>
+            @endif
         </li>
         @endfor
         @if ($data->currentPage() != $data->lastPage())

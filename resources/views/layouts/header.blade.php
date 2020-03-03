@@ -35,9 +35,11 @@
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         @include('layouts.navigate')
                         <div class="cart my-2 my-lg-0">
-                            <span>
+                            <a href="{{ route('shopping-cart')}}">
+                                <span>
                                 <i class="fa fa-shopping-cart" aria-hidden="true"></i></span>
-                            <span class="quntity">3</span>
+                            <span class="quntity">{{ Cart::count()}}</span>
+                            </a>                        
                         </div>
                         @include('layouts.search')
                     </div>

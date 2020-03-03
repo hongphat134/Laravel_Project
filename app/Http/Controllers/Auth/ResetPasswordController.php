@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ResetsPasswords;
-use Illuminate\Http\Request;
+
+use App\Http\Controllers\Controller;
+use App\Http\Requests\ResetPasswordRequest;
 use App\User;
 
 class ResetPasswordController extends Controller
@@ -43,9 +44,9 @@ class ResetPasswordController extends Controller
         return view('auth.passwords.reset',compact('token','email'));
     }
 
-    public function postResetPassword(Request $rq){
+    public function postResetPassword(ResetPasswordRequest $rq){
         //Kiểm tra Confirm Password
-        if(strcasecmp($rq->password_confirmation,$rq->password)) return redirect()->back()->with(['error' => 'Confirm password is not incorrect!']);
+        // if(strcasecmp($rq->password_confirmation,$rq->password)) return redirect()->back()->with(['error' => 'Confirm password is not incorrect!']);
 
         $user = User::whereEmail($rq->email)->first();
 

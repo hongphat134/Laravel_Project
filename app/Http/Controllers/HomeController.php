@@ -45,6 +45,8 @@ class HomeController extends Controller
     public function getFind(Request $request){
         $key = $request->key;        
         $data = Book::where('book_name','like','%'.$key.'%')->paginate(5);
+        // $data->withPath('key='.$key);
+        $data->appends(['key' => $key]);
         return view('pages.product',compact('key','data'));
     }
 }

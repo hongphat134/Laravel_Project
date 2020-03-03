@@ -1,6 +1,9 @@
 @extends('layouts.master')
 @section('content')
 <body> 
+    @if(session('alert'))
+        {{ session('alert') }}
+    @endif
     <section class="slider">         
         <div class="container">
             <div id="owl-demo" class="owl-carousel owl-theme">
@@ -120,7 +123,9 @@
                 @foreach($data as $item) 
                  <div class="col-lg-2 col-md-3 col-sm-4">
                     <div class="item">
-                        <img style="width: 165px; height: 260px" src="{!! asset('public/images/'.$item->book_img) !!}" alt="{{$item->book_name}}" title="{{$item->book_name}}">                        
+                        <a href="{{url('product-single/'.$item->book_url)}}">
+                            <img style="width: 165px; height: 260px" src="{!! asset('public/images/'.$item->book_img) !!}" alt="{{$item->book_name}}" title="{{$item->book_name}}">                        
+                        </a>
                         <h3><a href="{{url('product-single/'.$item->book_url)}}">{{$item->book_name}}</a>
                         @if($item->book_promotion == 1)                        
                             <span class="badge badge-danger">Giảm giá</span>                         
@@ -130,13 +135,14 @@
                                 {{number_format($item->book_price*((100 - PERCENT_OFF) * 0.01)) }}<sup>đ</sup>
                             </span>
                             <strike><sup><span class="price">{{number_format($item->book_price)}}<sup>đ</sup></span> </sup></strike>
-                            / <a href="#">Mua ngay</a>
+                            / <!-- <a href="{{ url('./addCart/'.$item->id.'/'.$item->book_name.'/'.$item->book_img.'/'.$item->book_price) }}">Mua ngay</a> -->
+                            <a href="{{ route('addItem',[$item->id]) }}">Mua ngay</a>
                         </h6> 
                         @else                            
                         </h3>                        
                         <h6>
                             <span class="price">{{number_format($item->book_price)}}<sup>đ</sup></span>                            
-                            / <a href="#">Mua ngay</a>
+                            / <a href="{{ route('addItem',[$item->id]) }}">Mua ngay</a>
                         </h6> 
                         @endif
                     </div>                   

@@ -33,8 +33,11 @@ class ForgotPasswordController extends Controller
     {
         $this->middleware('guest');
     }
+    public function getForgot(){
+        return view('auth.passwords.email');
+    }
 
-    public function forgot(Request $rq){  
+    public function postForgot(Request $rq){  
         $user = User::whereEmail($rq->email)->first();
 
         if($user == null){

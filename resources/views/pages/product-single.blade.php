@@ -7,7 +7,9 @@
         </div>
     </div>
     <section class="product-sec">
-
+    @if(session('alert'))
+        {{ session('alert') }}
+    @endif
         <div class="container">            
             <!-- {{var_dump($book)}}             -->
             <h1>{{$book->book_name}}</h1>
@@ -58,25 +60,31 @@
                             <span class="name">Digital List Price</span><span class="clm">:</span>
                             <span class="price">$4.71</span>
                         </li> -->
+                        
                         @if($book->book_promotion == 1)
                         <li>
                             <span class="name">Giá gốc</span><span class="clm">:</span>
                             <span class="price">{{number_format($book->book_price)}}<sup>đ</sup></span>
                         </li>
-                        @endif
                         <li>
                             <span class="name">Giá</span><span class="clm">:</span>     
                             <span class="price final">
                                 {{number_format($book->book_price*((100 - PERCENT_OFF) * 0.01))}}<sup>đ</sup>
                             </span>
                         </li>
-                        @if($book->book_promotion == 1)
                         <li><span class="save-cost">Tiết kiệm {{ number_format(($book->book_price - ($book->book_price * ((100 - PERCENT_OFF) * 0.01)))) }}<sup>đ</sup> ({{PERCENT_OFF}}%)</span></li>
+                        @else
+                        <li>
+                            <span class="name">Giá</span><span class="clm">:</span>     
+                            <span class="price final">
+                                {{number_format($book->book_price)}}<sup>đ</sup>
+                            </span>
+                        </li>
                         @endif
                     </ul>                    
                     <div class="btn-sec">
                         <button class="btn ">Thêm vào giỏ hàng</button>
-                        <button class="btn black">Mua ngay</button>
+                        <button class="btn black"><a href="{{ route('addItem',[$book->id]) }}">Mua ngay</a></button>
                     </div>
                 </div>
             </div>

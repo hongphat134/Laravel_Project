@@ -39,21 +39,15 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
-    public function login(Request $rq){
-        $email = $rq->email;
-        $password = $rq->password;
-        $remember = $rq->_token;
-
-        if (Auth::attempt(['email' => $email, 'password' => $password])) {
+    public function login(Request $rq){        
+        if (Auth::attempt(['email' => $rq->email, 'password' => $rq->password])) {
             // Authentication passed...
             if(Auth::user()->userstype_id == 2)
                 return redirect()->route('home');
             else
                 return "This is Admin page!";
         }
-        else {
-            return redirect()->back();                  
-        }
+        else return redirect()->back()->with(['error' => 'Đăng nhập thất bại!']);                          
     }
 
     public function logout(){
