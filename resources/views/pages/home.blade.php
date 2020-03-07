@@ -2,7 +2,11 @@
 @section('content')
 <body> 
     @if(session('alert'))
-        {{ session('alert') }}
+        <section class="alert">
+            <div class="alert alert-success">
+                <strong>{{ session('alert') }}</strong>
+            </div>    
+        </section>    
     @endif
     <section class="slider">         
         <div class="container">
@@ -12,7 +16,7 @@
                         <img src="public/images/slide1.jpg" alt="slide1">
                         <div class="content">
                             <div class="title">
-                                <h3>Chào mừng đến với cửa hàng sách</h3>
+                                <h3>Chào mừng đến với cửa hàng sách</h3>                                
                                 <h5>Khám phá những quyển sách hay nhất cùng với chúng tôi</h5>
                                 <a href="#" class="btn">cửa hàng sách</a>
                             </div>

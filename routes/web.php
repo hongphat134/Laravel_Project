@@ -53,3 +53,10 @@ Route::get('/removeCart/{id}','CartController@removeItem')->name('removeItem');
 Route::get('/updateCart/{id}','CartController@updateItem')->name('updateItem');
 Route::get('/destroyCart','CartController@destroyItems')->name('destroyItems');
 
+//PayPal
+Route::get('/paypal',function(){
+	return view('pages.paypal');
+});
+Route::get('/paypal/status','PayPalTestController@status');
+
+Route::post('/paypal','PayPalTestController@index')->name('paypal');

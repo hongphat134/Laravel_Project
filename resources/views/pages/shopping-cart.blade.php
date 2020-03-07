@@ -1,5 +1,12 @@
 @extends('layouts.master')
 @section('content')
+	@if(session('error'))
+        <section class="alert">
+            <div class="alert alert-danger">
+                <strong>{{ session('error') }}</strong>
+            </div>    
+        </section>    
+    @endif
 	@if(Cart::count() > 0)
 	<table border=1>
 		<tr>
@@ -28,6 +35,12 @@
 	@endforeach	
 	</table>
 	<hr>
+	<form action="{{ route('paypal') }}" method="post">
+		{{csrf_field()}}
+		<input type="hidden" name="data" value="{{Cart::content()}}">
+		<button type="submit">Thanh toán qua PayPal</button>
+	</form>
+	<hr>
 	<div><a href="{{ route('destroyItems') }}">Xoá toàn bộ giỏ hàng</a></div>
 	@else Giỏ hàng rỗng!
 	@endif
@@ -36,4 +49,11 @@
 	Subtotal: {{ number_format((double)Cart::subtotal(),3,',','.') }}<sup>đ</sup> <hr>
 	Tax: {{ number_format((double)Cart::tax(),3,',','.') }}<sup>đ</sup> <hr>
 	</div>
+
+	<br>
+	<div class="paypal">
+		<script src="https://www.paypal.com/sdk/js?client-id=sb"></script>
+		<script>paypal.Buttons().render('body');</script>	
+	</div>
+	
 @endsection
