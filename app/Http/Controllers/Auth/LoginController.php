@@ -42,10 +42,8 @@ class LoginController extends Controller
     public function login(Request $rq){        
         if (Auth::attempt(['email' => $rq->email, 'password' => $rq->password])) {
             // Authentication passed...
-            if(Auth::user()->userstype_id == 2)
-                return redirect()->route('home');
-            else
-                return "This is Admin page!";
+            if(Auth::user()->userstype_id == 2) return redirect()->route('home');
+            else return redirect()->route('admin/home');
         }
         else return redirect()->back()->with(['error' => 'Đăng nhập thất bại!']);                          
     }

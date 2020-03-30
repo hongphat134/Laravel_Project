@@ -1,0 +1,42 @@
+*{
+	margin: 0;
+	left: 0;
+	font-family: 'Oswald', sans-serif;
+}
+.container{
+  margin-bottom: 4rem;
+}
+
+#footer{
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  padding-top: 0.75rem;
+  height: 3rem;
+  width: 100%;
+  background: #fed700;
+  color: black;
+  text-align: center;
+}
+
+/* Responsive Menu*/
+.navbar-header .icon{
+  display: none;
+}
+
+@media screen and (max-width: 767px) {
+  .navbar-nav{ display: none; }
+  .navbar-header a.icon {
+      font-size: 150%;
+      margin-top:6px;
+      margin-right:20px;
+      float: right;
+      display: block;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .navbar-nav.responsive{
+    display: block;
+  }
+}

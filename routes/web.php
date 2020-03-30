@@ -12,7 +12,7 @@
 */
 
 //Các link của navigator
-Route::get('/', 'HomeController@index');
+Route::get('/', 'HomeController@index')->name('home');
 
 Route::get('/shop','HomeController@showListBook');
 
@@ -33,8 +33,6 @@ Route::get('/cart','CartController@getShoppingCart')->name('shopping-cart');
 
 //Phần đăng nhập 
 Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
 	
 Route::post('/login','Auth\LoginController@login')->name('login');
 Route::post('/register','Auth\RegisterController@register')->name('register');
@@ -60,3 +58,73 @@ Route::get('/paypal',function(){
 Route::get('/paypal/status','PayPalTestController@status');
 
 Route::post('/paypal','PayPalTestController@index')->name('paypal');
+
+//Admin 
+Route::group(['prefix' => 'admin','middleware' => 'auth'], function() {
+	
+	Route::get('/','DashboardController@index')->name('admin/home');
+
+	Route::group(['prefix' => 'book'], function(){
+		Route::get('/','BookController@home')->name('book/home');
+		Route::get('/add','BookController@getAdd')->name('book.getAdd');
+		Route::post('/add','BookController@postAdd')->name('book.postAdd');
+		Route::get('/edit/{id}','BookController@getEdit')->name('book.getEdit');
+		Route::post('/edit/{id}','BookController@postEdit')->name('book.postEdit');
+		Route::get('/delete/{id}','BookController@delete')->name('book.delete');
+		Route::get('/pdf','BookController@pdf');
+	});
+
+	Route::group(['prefix' => 'category'], function(){
+		Route::get('/','CategoryController@home')->name('category/home');		
+		Route::get('/add','CategoryController@getAdd')->name('category.getAdd');
+		Route::post('/add','CategoryController@postAdd')->name('category.postAdd');
+		Route::get('/edit/{id}','CategoryController@getEdit')->name('category.getEdit');
+		Route::post('/edit/{id}','CategoryController@postEdit')->name('category.postEdit');
+		Route::get('/delete/{id}','CategoryController@delete')->name('category.delete');
+	});
+
+	Route::group(['prefix' => 'order'], function(){
+		Route::get('/','OrderController@home')->name('order/home');		
+	});
+
+	Route::group(['prefix' => 'publisher'], function(){
+		Route::get('/','PublisherController@home')->name('publisher/home');		
+		Route::get('/add','PublisherController@getAdd')->name('publisher.getAdd');
+		Route::post('/add','PublisherController@postAdd')->name('publisher.postAdd');
+		Route::get('/edit/{id}','PublisherController@getEdit')->name('publisher.getEdit');
+		Route::post('/edit/{id}','PublisherController@postEdit')->name('publisher.postEdit');
+		Route::get('/delete/{id}','PublisherController@delete')->name('publisher.delete');
+	});
+
+	Route::group(['prefix' => 'user'], function(){
+		Route::get('/','UserController@home')->name('user/home');		
+	});
+});
+
+Route::get('/chart',function(){
+	$data = App\Book::all();
+	return view('chart',compact('data'));
+});
+
+Route::get('/slug',function(){
+	return str_slug("Người Yêu Cũ");
+});
+
+Route::get('/plugin',function(){
+	return view('plugin_js');
+});
+
+Route::get('/getPlugin','HomeController@getPlugin')->name('plugin');
+
+
+Route::get('/selectize',function(){
+	return view('selectize');
+});
+
+Route::get('/pwgslider',function(){
+	return view('pwgslider');
+});
+
+Route::get('/googlemaps',function(){
+	return view('googlemaps');
+});

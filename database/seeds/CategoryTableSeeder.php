@@ -12,7 +12,7 @@ class CategoryTableSeeder extends Seeder
     public function run()
     {
         Schema::disableForeignKeyConstraints();
-        DB::table('publisher')->truncate();
+        DB::table('category')->truncate();
 
         $data = [
         	['cat_name' => 'Giáo khoa', 'cat_url' => 'giao-khoa', 'cat_des' => 'Đây là sách giáo khoa'],

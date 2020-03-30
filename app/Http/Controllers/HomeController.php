@@ -49,4 +49,8 @@ class HomeController extends Controller
         $data->appends(['key' => $key]);
         return view('pages.product',compact('key','data'));
     }
+
+    public function getPlugin(Request $rq){
+        var_dump($rq->all());
+    }
 }
