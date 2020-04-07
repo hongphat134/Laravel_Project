@@ -30,6 +30,10 @@ Route::get('/about',function(){
 
 Route::get('/cart','CartController@getShoppingCart')->name('shopping-cart');
 
+Route::get('/checkout','OrderController@getCheckout')->name('payment');
+
+Route::post('/checkout','OrderController@postCheckout');
+
 
 //Phần đăng nhập 
 Auth::routes();
@@ -52,11 +56,9 @@ Route::get('/updateCart/{id}','CartController@updateItem')->name('updateItem');
 Route::get('/destroyCart','CartController@destroyItems')->name('destroyItems');
 
 //PayPal
-Route::get('/paypal',function(){
-	return view('pages.paypal');
-});
-Route::get('/paypal/status','PayPalTestController@status');
+Route::get('/paypal/status/{order_id}','PayPalTestController@status');
 
+Route::get('/paypal/{order_id}','PayPalTestController@index')->name('paypal1');
 Route::post('/paypal','PayPalTestController@index')->name('paypal');
 
 //Admin 
@@ -84,7 +86,12 @@ Route::group(['prefix' => 'admin','middleware' => 'auth'], function() {
 	});
 
 	Route::group(['prefix' => 'order'], function(){
-		Route::get('/','OrderController@home')->name('order/home');		
+		Route::get('/','OrderController@home')->name('order/home');
+		Route::get('/edit/{id}','OrderController@getEdit')->name('order.getEdit');
+		Route::post('/edit/{id}','OrderController@postEdit')->name('order.postEdit');	
+		Route::get('/editStatus/{id}','OrderController@editStatus')->name('order.editStatus');
+		Route::get('/editSituation/{id}/{situation}','OrderController@editSituation')->name('order.editSituation');
+		Route::get('/pdf/{id}','OrderController@getOrderDetail')->name('order.pdf');				
 	});
 
 	Route::group(['prefix' => 'publisher'], function(){

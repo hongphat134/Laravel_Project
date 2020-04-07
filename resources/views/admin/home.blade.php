@@ -1,8 +1,7 @@
 @extends('admin.layouts.master')
 @section('content')
-	<link rel="stylesheet" href="public/css/styles.css">
+<link rel="stylesheet" href="public/css/styles.css">
 <link rel="stylesheet" href="public/toastr/toastr.min.css">
-
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.js"></script>
 <script src="public/js/jquery.min.js"></script>
@@ -16,57 +15,79 @@
                 <div class="panel-heading">Dashboard</div>
                 <div class="panel-body">
                     <canvas id="line-chart"></canvas>
+                    <h1 class="text-center">Total of Books Sold by Month in 2020</h1>
                 </div>                
             </div>
         </div>
     </div>
-
-    <div class="box">
-        <div class="chart" data-percent="73">
+    
+    <div class="row">
+      <div class="box">
+        <div class="chart" data-percent="{{$bookSellRate}}">
           <div class="percent"></div>
+          <h4>Book Sell Rate</h4>
       </div>    
     </div>
      <div class="box">
-        <div class="chart" data-percent="85">
+        <div class="chart" data-percent="{{$CanceledOrderRate}}">
           <div class="percent"></div>
+          <h4>Cancel Order Rate</h4>
         </div>    
     </div>
      <div class="box">
-        <div class="chart" data-percent="13">
+        <div class="chart" data-percent="{{$UnhandleOrderRate}}">
           <div class="percent"></div>
+          <h4>Unhandle Order Rate</h4>
         </div>    
     </div>
      <div class="box">
-        <div class="chart" data-percent="44">
+        <div class="chart" data-percent="{{$HandingOrderRate}}">
           <div class="percent"></div>
+          <h4>Handing Order Rate</h4>
         </div>    
     </div>
+    </div>
+   ><h1 class="text-center easypie"><label for="Easypie">Easypie Chart in 2020</label></h1>
     <span class="btn js_update">Update chart</span>
-
-
-    <button type="button" id="button">Click Toast</button>
 </div>
 
-
- <!-- @foreach($data as $item)   
-    $key .= $item->id.',';
-    $info .= $item->book_price.',';
- @endforeach -->
 <?php 
-    $key = "";
-    $info = "";
-    foreach ($data as $item) {
-        $key .= $item->id.',';
-        $info .= $item->book_price.',';
-    }
+  $data = array();
+  $listMonth = ["Jan", "Feb", "Mar", "Apr", "May", "June","July","August","Sep","Oct","Nov","Dec"];
 
-    // echo "Key: ".$key.'<hr>';
-    // echo "Info: ".$info;
-  ?>
+  foreach ($listMonth as $month) {
+      $data[$month] = [
+           "book" => 0,
+          "order" => 0,
+          "user" => 0
+      ];
+  }
 
+  foreach ($listTotalBookSell as $bookSell) {
+    $data[$listMonth[$bookSell['month'] - 1]]['book'] = (int)$bookSell['sum'];
+  }
+
+  foreach ($listTotalOrder as $order) {
+    $data[$listMonth[$order['month'] - 1]]['order'] = (int)$order['count'];
+  }
+
+  foreach ($listTotalUser as $user) {
+    $data[$listMonth[$user['month'] - 1]]['user'] = (int)$user['count'];
+  }
+
+  // var_dump($data);
+
+  $bookInfo = ''; $orderInfo = ''; $userInfo = '';
+
+  foreach ($data as $value) {
+    $bookInfo .= $value['book'].',';
+    $orderInfo .= $value['order'].',';
+    $userInfo .= $value['user'].',';
+  }
+
+?>
 
 <script type="text/javascript">
-
     window.onload = function () {
         Chart.defaults.global.defaultFontColor = '#000000';
         Chart.defaults.global.defaultFontFamily = 'Arial';
@@ -75,14 +96,28 @@
         var myChart = new Chart(lineChart, {
             type: 'bar',
             data: {
-                labels: [{{$key}}],//["Jan", "Feb", "Mar", "Apr", "May", "June","July","August","September"],
+                labels: ["Jan", "Feb", "Mar", "Apr", "May", "June","July","August","Sep","Oct","Nov","Dec"],
                 datasets: [
                     {
-                        label: 'Book price',
-                        data: [{{$info}}],//[1, 2, 3, 4, 5, 6, 7, 8, 9],
-                        backgroundColor: 'rgba(0, 128, 128, 0.3)',
-                        borderColor: 'rgba(0, 128, 128, 0.7)',
-                        borderWidth: 1
+                        label: 'Book Sell',
+                        data: [{{$bookInfo}}],//[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+                        backgroundColor: 'rgba(0, 0, 0 , 1)',
+                        borderColor: 'rgba(255 ,255 ,0)',
+                        borderWidth: 2
+                    },
+                    {
+                        label: 'New Order',
+                        data: [{{$orderInfo}}],//[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+                        backgroundColor: 'rgba(0, 255, 255 , 0.7)',
+                        borderColor: 'rgba(255 ,0 ,0)',
+                        borderWidth: 2
+                    },
+                    {
+                        label: 'New User',
+                        data: [{{$userInfo}}],//[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+                        backgroundColor: 'rgba(255, 0, 255 , 1)',
+                        borderColor: 'rgba(100 ,100 ,100)',
+                        borderWidth: 2
                     }
                 ]
             },
@@ -118,34 +153,5 @@
           chart.update(Math.random()*200-100);
         });
     };
-
-    $('#button').on('click',function(){
-        toastr.options = {
-         "closeButton": true,
-          "debug": false,
-          "newestOnTop": true,
-          "progressBar": false,
-          "positionClass": "toast-top-right",
-          "preventDuplicates": false,
-          // "onclick": function(){
-          //   alert("Con Kờ!");
-          // },
-          "onclick":null,
-          "showDuration": "300",
-          "hideDuration": "1000",
-          "timeOut": "0",
-          "extendedTimeOut": "0",
-          "showEasing": "swing",
-          "hideEasing": "linear",
-          "showMethod": "fadeIn",
-          "hideMethod": "fadeOut",
-          "tapToDismiss": false
-        }
-
-        toastr["success"]("My name is Dylan<br /><br /><button type='button' class='btn clear'>Yes</button>", "Dylan")
-
-
-    });
-    
 </script>
 @stop

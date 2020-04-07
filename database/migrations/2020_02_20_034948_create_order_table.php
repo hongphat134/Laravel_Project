@@ -20,7 +20,8 @@ class CreateOrderTable extends Migration
             $table->string('consignee_phone', 12);
             $table->string('consignee_add', 200);
             $table->integer('order_status')->unsigned(); 
-            $table->longText('order_note');            
+            $table->string('order_situation',100); 
+            $table->longText('order_note')->nullable();            
             $table->integer('users_id')->unsigned();
             $table->foreign('users_id')->references('id')->on('users')->onUpdate('cascade');
             $table->timestamps();

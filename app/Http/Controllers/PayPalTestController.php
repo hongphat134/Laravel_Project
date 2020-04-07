@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\PayPalService as PayPalSvc;
 use Auth,Cart;
+use App\Order;
 
 class PayPalTestController extends Controller
 {
@@ -18,7 +19,7 @@ class PayPalTestController extends Controller
         $this->paypalSvc = $paypalSvc;
     }
 
-    public function index()
+    public function index($order_id)
     {    	
     	foreach (Cart::content() as $key => $item) {
     		$data[] = [
@@ -33,7 +34,7 @@ class PayPalTestController extends Controller
 
         $paypalCheckoutUrl = $this->paypalSvc
                                   // ->setCurrency('eur')
-                                  ->setReturnUrl(url('paypal/status'))
+                                  ->setReturnUrl(url('paypal/status',['order_id' => $order_id]))
                                   // ->setCancelUrl(url('paypal/status'))
                                   ->setItem($data)
                                   ->createPayment($transactionDescription);
@@ -42,17 +43,22 @@ class PayPalTestController extends Controller
 	    else dd(['Error']);		    		
     }
 
-    public function status()
+    public function status($order_id)
     {
         $paymentStatus = $this->paypalSvc->getPaymentStatus();
         //dd($paymentStatus);
         if($paymentStatus->state == 'approved'){
+            $order = Order::find($order_id);
+            $order->order_status = 1;
+            $order->order_situation = 'Chưa xử lý';
+            $order->save();
+
         	Cart::destroy();
         	return redirect()->route('home')->with(['alert' => 'Đặt hàng wa PayPal thành công!']);
         }
-        else 
+        else
         	return redirect()->route('cart')->with(['alert' => 'Đặt hàng thất bại!']);
-    }
+        }
 
     public function paymentList()
     {

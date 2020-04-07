@@ -1234,3 +1234,15 @@ footer {
   top:0;
   left: 0;
 }
+
+.form-control{
+  margin:0.5rem 0 0.5rem 0;
+}
+
+.btn-checkout{
+  padding-bottom: 2rem; 
+}
+
+.payment{
+  margin-top: 15px;
+}

@@ -8,6 +8,7 @@ use Cart;
 
 class CartController extends Controller
 {
+
     public function getShoppingCart(){
     	return view('pages.shopping-cart');
     }

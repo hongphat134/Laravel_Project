@@ -50,7 +50,10 @@
 		</button>
 	</form>
 	&nbsp;
-	<div><button class="btn btn-success"><a href="{{ route('destroyItems') }}">Xoá toàn bộ giỏ hàng</a></button></div>
+	<div><a href="{{ route('payment') }}"><button class="btn">Thanh toán</button></a></div>
+	&nbsp;
+	<div><a href="{{ route('destroyItems') }}"><button class="btn">Xoá toàn bộ giỏ hàng</button></a></div>
+
 	@else Giỏ hàng rỗng!
 	@endif
 	<hr>

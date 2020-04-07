@@ -16,7 +16,7 @@
 
 	<!-- Note:  Thứ tự file js phải đúng theo thứ tự này và dc đặt ở trên -->
 	<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-	<script src="/public/js/bootstrap.min.js"></script>	
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 	<script src="/vendor/kartik-v/bootstrap-fileinput/js/fileinput.min.js"></script>
 	<script src="/vendor/kartik-v/bootstrap-fileinput/js/locales/vi.js" type="text/javascript"></script>
 	<script src="/vendor/kartik-v/bootstrap-fileinput/themes/fas/theme.min.js" type="text/javascript"></script>
