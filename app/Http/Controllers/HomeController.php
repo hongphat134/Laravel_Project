@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Book;
+use Session;
 
 class HomeController extends Controller
 {
@@ -52,5 +53,19 @@ class HomeController extends Controller
 
     public function getPlugin(Request $rq){
         var_dump($rq->all());
+    }
+
+    public function changeLanguage($language){
+        // $lang = $request->language;
+        // $language = config('app.locale');
+        // if ($lang == 'en') {
+        //     $language = 'en';
+        // }
+        // if ($lang == 'vi') {
+        //     $language = 'vi';
+        // }
+
+        Session::put('language', $language);
+        return redirect()->back();
     }
 }

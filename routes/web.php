@@ -135,3 +135,15 @@ Route::get('/pwgslider',function(){
 Route::get('/googlemaps',function(){
 	return view('googlemaps');
 });
+
+// Route::get('welcome/{locale}', function ($locale) {
+//     App::setLocale($locale);
+//     //
+// });
+
+Route::group(['middleware' => 'localization'], function () {
+    Route::get('/localization', function () {
+        return view('localization');
+    });
+    Route::get('change-language/{language}','HomeController@changeLanguage')->name('change-language');
+});
